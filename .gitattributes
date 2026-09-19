@@ -1,0 +1,6 @@
+*                text=auto eol=lf
+
+VERSION          -text
+
+.gitattributes   export-ignore
+.gitignore       export-ignore
