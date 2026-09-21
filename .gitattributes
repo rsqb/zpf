@@ -1,5 +1,6 @@
 *                text=auto eol=lf
 
+PROJECT_COLOR    -text
 VERSION          -text
 
 .gitattributes   export-ignore

@@ -1,5 +1,6 @@
 # IDE
-.idea/
+.idea/*
+!.idea/icon.svg
 
 # OS
 .DS_Store
@@ -7,3 +8,4 @@ Thumbs.db
 
 # Local-only
 /scratch/
+*.local.md

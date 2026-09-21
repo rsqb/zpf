@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="256"
+     height="256"
+     viewBox="0 0 512 512"
+     preserveAspectRatio="xMidYMid meet"
+     color="#BD2E41">
+    <defs>
+        <!-- Visible faces of permutohedron (0, 1, 1.54, 2.54) -->
+        <g id="faces">
+            <!-- Front square -->
+            <polygon id="f12"
+                     points="204.50,150.36 82.95,272.13 204.44,401.07 325.98,279.29"/>
+            <!-- Upper-right hexagon -->
+            <polygon id="f1"
+                     points="442.63,136.14 377.56,67.07 222.49,76.33 204.50,150.36 325.98,279.29 409.05,274.33"/>
+            <!-- Lower-right hexagon -->
+            <polygon id="f123"
+                     points="409.05,274.33 325.98,279.29 204.44,401.07 222.40,461.34 377.47,452.08 442.57,386.85"/>
+            <!-- Upper-left hexagon -->
+            <polygon id="f124"
+                     points="134.53,59.92 69.43,125.15 35.84,263.34 82.95,272.13 204.50,150.36 222.49,76.33"/>
+            <!-- Lower-left hexagon -->
+            <polygon id="f2"
+                     points="82.95,272.13 35.84,263.34 69.37,375.86 134.44,444.93 222.40,461.34 204.44,401.07"/>
+            <!-- Right square -->
+            <polygon id="f13"
+                     points="409.05,274.33 442.57,386.85 476.16,248.66 442.63,136.14"/>
+            <!-- Top square -->
+            <polygon id="f14"
+                     points="289.60,50.66 134.53,59.92 222.49,76.33 377.56,67.07"/>
+        </g>
+        <mask id="silhouette-mask">
+            <use href="#faces" fill="#fff"/>
+        </mask>
+    </defs>
+    <use id="base" href="#faces" fill="currentColor"/>
+    <g id="shading" fill="#000">
+        <use href="#f12" fill-opacity="0.51"/>
+        <use href="#f123" fill-opacity="0.66"/>
+        <use href="#f124" fill-opacity="0.37"/>
+        <use href="#f2" fill-opacity="0.66"/>
+        <use href="#f13" fill-opacity="0.35"/>
+    </g>
+    <use id="edges"
+         href="#faces"
+         fill="none"
+         stroke="#000"
+         stroke-linejoin="round"
+         stroke-width="2"
+         mask="url(#silhouette-mask)"
+         opacity="0.05"/>
+</svg>
