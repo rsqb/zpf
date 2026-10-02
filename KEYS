@@ -1,0 +1,23 @@
+# TODO @rsqb: improve file preface
+# OpenPGP public keys of project maintainers.
+#
+# Import with:
+#
+#     gpg --import KEYS
+
+----------------------------------------------------------------
+pub   ed25519 2026-09-19 [SC] [expires: 2028-09-18]
+      FC1EB298055F660D049D4DE14C6C11046DEC3C1F
+uid           [ultimate] Yehor Marichev <git@rsqb.dev>
+sig 3    N   4C6C11046DEC3C1F 2026-09-19  [self-signature]
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mDMEaq6KWxYJKwYBBAHaRw8BAQdACFYS2kWo3l2QlgkJuCpl3kjo3Jroh6RMikMw
+BNHxpGO0HVllaG9yIE1hcmljaGV2IDxnaXRAcnNxYi5kZXY+iLQEExYKAF0WIQT8
+HrKYBV9mDQSdTeFMbBEEbew8HwUCaq6KWxsUgAAAAAAEAA5tYW51MiwyLjUrMS4x
+MiwyLDECGwMFCQPCZwAFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQTGwR
+BG3sPB+RQAEA4Q+GL4wanW20oynR+hDkfPBlibcth2LNb68lc3/GmrMA+JKPd2ir
+ZdLkfQb0A26nQWl3dktL+y3iISF8yeJmjwM=
+=MgOl
+-----END PGP PUBLIC KEY BLOCK-----

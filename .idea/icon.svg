@@ -3,10 +3,14 @@
      height="256"
      viewBox="0 0 512 512"
      preserveAspectRatio="xMidYMid meet"
-     color="#BD2E41">
+     shape-rendering="geometricPrecision"
+     color="#87136a">
+    <!-- FIXME @rsqb: normalize SVG attribute ordering and wrapping -->
+    <!-- TODO @rsqb: a better color could be picked -->
+    <!-- Figure resources -->
     <defs>
-        <!-- Visible faces of permutohedron (0, 1, 1.54, 2.54) -->
-        <g id="faces">
+        <!-- Visible facets of permutohedron (0, 1, 1.54, 2.54) -->
+        <g id="figure-geometry">
             <!-- Front square -->
             <polygon id="f12"
                      points="204.50,150.36 82.95,272.13 204.44,401.07 325.98,279.29"/>
@@ -29,24 +33,63 @@
             <polygon id="f14"
                      points="289.60,50.66 134.53,59.92 222.49,76.33 377.56,67.07"/>
         </g>
-        <mask id="silhouette-mask">
-            <use href="#faces" fill="#fff"/>
+        <!-- Outline of the figure without seams; keep in sync with `figure-geometry` -->
+        <polygon id="figure-outline"
+                 points="289.60,50.66 377.56,67.07 442.63,136.14 476.16,248.66 442.57,386.85 377.47,452.08
+                         222.40,461.34 134.44,444.93 69.37,375.86 35.84,263.34 69.43,125.15 134.53,59.92"/>
+        <mask id="figure-silhouette-mask">
+            <use href="#figure-outline" fill="#fff"/>
+        </mask>
+        <!-- Lambertian direct-light map: white = fully lit, black = unlit -->
+        <g id="figure-direct-light-map" color-interpolation="sRGB">
+            <!-- Fully lit baseline -->
+            <use href="#figure-outline" fill="#fff" stroke="none"/>
+            <!-- FIXME @rsqb: fill gaps and fix jagged edges, use crispEdges -->
+            <!-- TODO @rsqb: penumbra gradient shadow could be added (defined light source) -->
+            <!-- TODO @rsqb: specular reflection could be added -->
+            <!-- TODO @rsqb: material texturing could be added -->
+            <!-- Relative geometric darkness of each facet under no ambient light -->
+            <g fill="#000"
+               stroke="none"
+               shape-rendering="geometricPrecision">
+                <!-- TODO @rsqb: a better light direction could be chosen -->
+                <use href="#f12" opacity="0.42265"/>
+                <use href="#f123" opacity="0.666667"/>
+                <use href="#f124" opacity="0.666667"/>
+                <use href="#f2" opacity="1.0"/>
+                <use href="#f13" opacity="0.42265"/>
+                <use href="#f14" opacity="0.42265"/>
+            </g>
+        </g>
+        <!-- in: grayscale geometric relative direct-light map; red channel read -->
+        <!-- illumination = clamp(slope * in + intercept, 0, 1) -->
+        <!-- Direct light scaled by `slope`, ambient light added by `intercept` -->
+        <filter id="figure-light-mix" color-interpolation-filters="sRGB">
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="0.80" intercept="0.20"/>
+            </feComponentTransfer>
+            <feColorMatrix type="matrix"
+                           values="1 0 0 0 0
+                                   1 0 0 0 0
+                                   1 0 0 0 0
+                                   0 0 0 1 0"/>
+        </filter>
+        <!-- Total illumination (direct plus ambient); white = full, black = none -->
+        <mask id="figure-illumination-mask"
+              mask-type="luminance"
+              color-interpolation="sRGB">
+            <use href="#figure-direct-light-map"
+                 filter="url(#figure-light-mix)"/>
         </mask>
     </defs>
-    <use id="base" href="#faces" fill="currentColor"/>
-    <g id="shading" fill="#000">
-        <use href="#f12" fill-opacity="0.51"/>
-        <use href="#f123" fill-opacity="0.66"/>
-        <use href="#f124" fill-opacity="0.37"/>
-        <use href="#f2" fill-opacity="0.66"/>
-        <use href="#f13" fill-opacity="0.35"/>
+    <!-- FIXME @rsqb: validate the color-space pipeline is physically correct -->
+    <!-- Rendering -->
+    <g id="figure-layers"
+       color-interpolation="linearRGB"
+       mask="url(#figure-silhouette-mask)">
+        <use href="#figure-outline" fill="#000"/>
+        <use href="#figure-outline"
+             fill="currentColor"
+             mask="url(#figure-illumination-mask)"/>
     </g>
-    <use id="edges"
-         href="#faces"
-         fill="none"
-         stroke="#000"
-         stroke-linejoin="round"
-         stroke-width="2"
-         mask="url(#silhouette-mask)"
-         opacity="0.05"/>
 </svg>
