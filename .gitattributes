@@ -1,7 +1,12 @@
-*                text=auto eol=lf
+*                   text=auto eol=lf
 
-PROJECT_COLOR    -text
-VERSION          -text
+PROJECT_COLOR       -text
+VERSION             -text
 
-.gitattributes   export-ignore
-.gitignore       export-ignore
+# Export rules
+.idea/              export-ignore
+/scratch/           export-ignore
+.gitattributes      export-ignore
+.gitignore          export-ignore
+KEYS                export-ignore
+PROJECT_COLOR       export-ignore

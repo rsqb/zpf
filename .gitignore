@@ -1,5 +1,6 @@
 # IDE
 .idea/*
+!.idea/externalDependencies.xml
 !.idea/icon.svg
 
 # OS
@@ -7,5 +8,7 @@
 Thumbs.db
 
 # Local-only
-/scratch/
+/tools/
+/scratch/*
 *.local.md
+!/scratch/.gitkeep

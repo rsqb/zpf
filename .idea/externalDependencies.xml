@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+    <!-- TODO @rsqb: add plugin version constraints -->
+    <component name="ExternalDependencies">
+        <!-- General -->
+        <plugin id="intellij.structureView.plugin"/>      <!-- used by Markdown and TODOs -->
+        <plugin id="com.intellij.modules.json"/>          <!-- JSON language support; used by Mermaid -->
+        <plugin id="org.jetbrains.plugins.yaml"/>         <!-- YAML language support; used by Mermaid -->
+        <plugin id="com.intellij.modules.jcef"/>          <!-- Embedded browser; used by Markdown (images) -->
+
+        <!-- VCS -->
+        <plugin id="Git4Idea"/>                           <!-- Git integration -->
+        <plugin id="com.github.xepozz.gitattributes"/>    <!-- .gitattributes syntax highlighting and completion -->
+        <plugin id="mobi.hsz.idea.gitignore"/>            <!-- .gitignore/.dockerignore file support -->
+
+        <!-- Docs -->
+        <plugin id="org.intellij.plugins.markdown"/>      <!-- Markdown editor and preview; used by Mermaid -->
+        <plugin id="com.intellij.mermaid"/>               <!-- Mermaid diagram rendering and syntax highlighting -->
+
+        <!-- Workspace -->
+        <plugin id="org.jetbrains.plugins.terminal"/>     <!-- IDE terminal (Nix dev workflow, Just recipes) -->
+        <plugin id="com.jetbrains.sh"/>                   <!-- Shell script syntax highlighting and completion -->
+        <plugin id="nix-idea"/>                           <!-- Nix language support -->
+        <plugin id="org.mvnsearch.plugins.justPlugin"/>   <!-- Just command runner justfile support -->
+        <plugin id="intellij.todo.plugin"/>               <!-- TODOs comment tracking -->
+
+        <!-- Source -->
+        <plugin id="com.redhat.devtools.lsp4ij"/>         <!-- Language server client; used by Zig -->
+        <plugin id="com.falsepattern.zigbrains"/>         <!-- Zig language and tooling support -->
+    </component>
+</project>

@@ -47,7 +47,7 @@
             <!-- FIXME @rsqb: fill gaps and fix jagged edges, use crispEdges -->
             <!-- TODO @rsqb: penumbra gradient shadow could be added (defined light source) -->
             <!-- TODO @rsqb: specular reflection could be added -->
-            <!-- TODO @rsqb: material texturing could be added -->
+            <!-- TODO @rsqb: material texturing could be added (e.g. velvet) -->
             <!-- Relative geometric darkness of each facet under no ambient light -->
             <g fill="#000"
                stroke="none"
