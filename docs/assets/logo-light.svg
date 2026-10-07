@@ -1,3 +1,17 @@
+<!--
+────────────────────────────────────────────────────────────────────────────
+  SPDX-FileCopyrightText: Copyright © 2026 Yehor Marichev <legal@rsqb.dev>
+  SPDX-License-Identifier: CC-BY-ND-4.0
+
+  This file is licensed under the Creative Commons
+  Attribution-NoDerivatives 4.0 International licence (CC BY-ND 4.0).
+  See LICENSES/CC-BY-ND-4.0.txt
+  or https://creativecommons.org/licenses/by-nd/4.0/legalcode.txt
+
+  This licence grants copyright permissions only.
+  The ZPF name and logo are not licensed for use as a trademark.
+────────────────────────────────────────────────────────────────────────────
+-->
 <svg xmlns="http://www.w3.org/2000/svg"
      lang="en"
      width="128"
@@ -9,7 +23,7 @@
      role="img"
      aria-labelledby="zpf-logo-title">
     <!-- FIXME @rsqb: normalize SVG attribute ordering and wrapping -->
-    <!-- TODO @rsqb: a better color could be picked -->
+    <!-- TODO @rsqb: a better colour could be picked -->
     <title id="zpf-logo-title">ZPF</title>
     <!-- Figure resources -->
     <defs>
@@ -65,7 +79,7 @@
                 <use href="#zpf-logo-facet-14" opacity="0.42265"/>
             </g>
         </g>
-        <!-- in: grayscale geometric relative direct-light map; red channel read -->
+        <!-- in: greyscale geometric relative direct-light map; red channel read -->
         <!-- illumination = clamp(slope * in + intercept, 0, 1) -->
         <!-- Direct light scaled by `slope`, ambient light added by `intercept` -->
         <filter id="zpf-logo-light-mix" color-interpolation-filters="sRGB">
@@ -86,7 +100,7 @@
                  filter="url(#zpf-logo-light-mix)"/>
         </mask>
     </defs>
-    <!-- FIXME @rsqb: validate the color-space pipeline is physically correct -->
+    <!-- FIXME @rsqb: validate the colour-space pipeline is physically correct -->
     <!-- Rendering -->
     <g id="zpf-logo-layers"
        color-interpolation="linearRGB"

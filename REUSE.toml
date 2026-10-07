@@ -1,0 +1,12 @@
+version = 1
+
+[[annotations]]
+path = "*"
+SPDX-FileCopyrightText = "Copyright © 2026 Yehor Marichev <legal@rsqb.dev>"
+SPDX-License-Identifier = "MPL-2.0"
+precedence = "closest"
+
+[[annotations]]
+path = ["PROJECT_COLOR"]
+SPDX-FileCopyrightText = "Copyright © 2026 Yehor Marichev <legal@rsqb.dev>"
+SPDX-License-Identifier = "CC-BY-ND-4.0"

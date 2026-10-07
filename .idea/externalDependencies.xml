@@ -1,4 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!--
+────────────────────────────────────────────────────────────────────────────
+  SPDX-FileCopyrightText: Copyright © 2026 Yehor Marichev <legal@rsqb.dev>
+  SPDX-License-Identifier: MPL-2.0
+
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+────────────────────────────────────────────────────────────────────────────
+-->
 <project version="4">
     <!-- TODO @rsqb: add plugin version constraints -->
     <component name="ExternalDependencies">
@@ -6,6 +15,7 @@
         <plugin id="intellij.structureView.plugin"/>      <!-- used by Markdown and TODOs -->
         <plugin id="com.intellij.modules.json"/>          <!-- JSON language support; used by Mermaid -->
         <plugin id="org.jetbrains.plugins.yaml"/>         <!-- YAML language support; used by Mermaid -->
+        <plugin id="org.toml.lang"/>                      <!-- TOML configuration language support -->
         <plugin id="com.intellij.modules.jcef"/>          <!-- Embedded browser; used by Markdown (images) -->
 
         <!-- VCS -->
