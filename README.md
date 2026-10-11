@@ -16,10 +16,14 @@
     </picture>
 </p>
 
-# Zig Presentation Foundation
+# ZPF – Zig Presentation Foundation
 
 A retained-mode declarative UI framework for Zig,
 in which view structure, data bindings, and invalidation are resolved at compile time.
+
+## Development
+
+See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for prerequisites, dev workflow, and project layout.
 
 ## Licensing
 
