@@ -12,12 +12,12 @@
     <configuration default="false"
                    name="clean"
                    type="ShConfigurationType"
-                   folderName="Nix"
+                   folderName="Workflow"
                    singleton="true"
                    nameIsGenerated="false">
         <option name="SCRIPT_TEXT"
-                value="clear;echo `# &lt;#`>/dev/null;./nix clean #&gt;&gt;$null;
-                       iex &quot;&amp;{$(gc nix)} clean&quot;;exit $LASTEXITCODE"/>
+                value="clear;echo `# &lt;#`>/dev/null;./dev clean #&gt;&gt;$null;
+                       iex &quot;&amp;{$(gc dev)} clean&quot;;exit $LASTEXITCODE"/>
         <option name="INDEPENDENT_SCRIPT_PATH" value="true"/>
         <option name="SCRIPT_PATH" value=""/>
         <option name="SCRIPT_OPTIONS" value=""/>

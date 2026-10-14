@@ -22,29 +22,28 @@
 ## Workflow
 
 > [!IMPORTANT]
-> Run from the project root, or substitute the path to `nix` (e.g. `../nix`).
+> Run from the project root, or substitute the path to [dev file](dev-launcher.md) (e.g. `../dev`).
 
 ### Unix
 
-- Set up tools, show available recipes: `./nix dev` or just `./nix`
-
-
-- Reset to pre-bootstrap state: `./nix clean`
+- Set up tools, show available recipes: `./dev shell` or just `./dev`
+<!-- [force loose list in faulty renderers] -->
+- Reset to pre-bootstrap state: `./dev clean`
 
 ### Windows
 
 - Set up tools, show available recipes
   ```powershell
-  gc nix | iex
+  gc dev | iex
   ```
   or
   ```powershell
-  iex "&{$(gc nix)} dev"
+  iex "&{$(gc dev)} shell"
   ```
 
 - Reset to pre-bootstrap state
   ```powershell
-  iex "&{$(gc nix)} clean"
+  iex "&{$(gc dev)} clean"
   ```
 
 ## Editors
@@ -67,7 +66,7 @@
 ├── templates/      # starter templates
 ├── flake.nix       # Nix tool declarations
 ├── justfile        # Just recipes
-├── nix             # polyglot script launcher
+├── dev             # polyglot script launcher
 ├── PROJECT_COLOR   # IDE project colour
 └── REUSE.toml      # licensing for headerless files
 ```

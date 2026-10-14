@@ -16,7 +16,7 @@ VERSION          -text
 /script/*        text eol=lf
 
 # Minified & lock files
-/nix             -text -diff
+/dev             -text -diff
 
 # Export rules
 .idea/           export-ignore
