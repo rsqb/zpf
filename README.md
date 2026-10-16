@@ -23,7 +23,8 @@ in which view structure, data bindings, and invalidation are resolved at compile
 
 ## Development
 
-See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for prerequisites, dev workflow, and project layout.
+See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
+for prerequisites, dev workflow, project layout, and versioning.
 
 ## Licensing
 

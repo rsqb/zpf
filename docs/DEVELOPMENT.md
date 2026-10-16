@@ -23,6 +23,8 @@
 
 > [!IMPORTANT]
 > Run from the project root, or substitute the path to [dev file](dev-launcher.md) (e.g. `../dev`).
+>
+> **Windows:** only paths to ancestor directories work.
 
 ### Unix
 
@@ -62,14 +64,28 @@
 ├── examples/       # example projects
 ├── LICENSES/       # licence texts
 ├── scratch/        # temporary local files
-├── script/         # workflow scripts
+├── script/         # workflow scripts (bootstrap, console, clean)
 ├── templates/      # starter templates
+├── dev             # polyglot script launcher
 ├── flake.nix       # Nix tool declarations
 ├── justfile        # Just recipes
-├── dev             # polyglot script launcher
 ├── PROJECT_COLOR   # IDE project colour
 └── REUSE.toml      # licensing for headerless files
 ```
+
+## Versioning
+
+- **Releases:** [SemVer 2.0](https://semver.org/spec/v2.0.0.html)
+- **Dev builds:**
+
+  ```text
+  X.Y.Z-dev.N+gYYwWWS
+  │         │  │  │ └─ commit within week (z*[a-z])
+  │         │  │  └─── ISO week (01–53)
+  │         │  └────── ISO week-year (00–99)
+  │         └───────── dev build number
+  └─────────────────── next release
+  ```
 
 ---
 
