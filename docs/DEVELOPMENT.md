@@ -58,6 +58,7 @@
 ## Layout
 
 ```yaml
+├── .github/        # GitHub configuration
 ├── .idea/          # IDE project settings
 ├── .run/           # IDE run configurations
 ├── docs/           # documentation and assets
@@ -66,6 +67,7 @@
 ├── scratch/        # temporary local files
 ├── script/         # workflow scripts (bootstrap, console, clean)
 ├── templates/      # starter templates
+├── build.zig.zon   # Zig package manifest
 ├── dev             # polyglot script launcher
 ├── flake.nix       # Nix tool declarations
 ├── justfile        # Just recipes

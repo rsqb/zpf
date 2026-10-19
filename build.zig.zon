@@ -1,0 +1,21 @@
+// ────────────────────────────────────────────────────────────────────────
+// SPDX-FileCopyrightText: Copyright © 2026 Yehor Marichev <legal@rsqb.dev>
+// SPDX-License-Identifier: MPL-2.0
+//
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+// ────────────────────────────────────────────────────────────────────────
+
+.{
+    // Zero-overhead declarative UI framework for Zig.
+    .name = .zpf,
+    .version = "0.1.0-dev.11+g26w43a",
+    .fingerprint = 0x2dc9890f4f0ef616, // NOTE: Changing this has security and trust implications.
+    .minimum_zig_version = "0.17.0",
+    .paths = .{
+        "src",
+        "build.zig",
+        "build.zig.zon",
+    },
+}

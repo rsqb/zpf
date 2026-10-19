@@ -21,6 +21,10 @@
 A retained-mode declarative UI framework for Zig,
 in which view structure, data bindings, and invalidation are resolved at compile time.
 
+## Requirements
+
+- **Zig:** [0.17](https://ziglang.org/download/#release-0.17.0)
+
 ## Development
 
 See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)

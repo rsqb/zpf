@@ -13,12 +13,16 @@ PROJECT_COLOR    -text
 VERSION          -text
 
 # Scripts
-/script/*        text eol=lf
+/script/**       text eol=lf
 
-# Minified & lock files
+# Minified files
 /dev             -text -diff
 
+# Linguist rules
+flake.lock       linguist-generated
+
 # Export rules
+.github/         export-ignore
 .idea/           export-ignore
 .run/            export-ignore
 /scratch/        export-ignore
