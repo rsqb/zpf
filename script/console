@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+
 # ────────────────────────────────────────────────────────────────────────
 # SPDX-FileCopyrightText: Copyright © 2026 Yehor Marichev <legal@rsqb.dev>
 # SPDX-License-Identifier: MPL-2.0
@@ -7,7 +8,50 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 # ────────────────────────────────────────────────────────────────────────
+
+# ┌────────────────────────────────────────────────────────────────────────────┐
+# │  Preconditions:                                                            │
+# │    - realpath($0) == <project-root>/script/*                               │
+# │    - is_executable(<project-root>/script/bootstrap)                        │
+# └────────────────────────────────────────────────────────────────────────────┘
+
+# ═════ Initialization ═════════════════════════════════════════════════════════
+
+# ───── Prologue ───────────────────────────────────────────────────────────────
 set -eu
 
-echo "console: not implemented yet" >&2
+# Resolve SCRIPT_DIR, PROJECT_ROOT; cd to root
+CDPATH= cd -- "$(dirname -- "$(realpath -- "$0")")"
+readonly SCRIPT_DIR="$PWD"
+cd ..
+readonly PROJECT_ROOT="$PWD"
+
+# ───── Constants ──────────────────────────────────────────────────────────────
+# NOTE: Keep in sync with script/bootstrap and script/clean
+readonly TOOLS_DIR="$PROJECT_ROOT/tools"
+readonly NIX_INSTALL_DIR="$TOOLS_DIR/nix"
+readonly NP_BIN="$NIX_INSTALL_DIR/nix-portable"
+readonly NP_LOCATION="$NIX_INSTALL_DIR"
+
+# ───── Environment ────────────────────────────────────────────────────────────
+readonly NP_DEBUG="${NP_DEBUG:-0}"
+readonly NP_RUNTIME="${NP_RUNTIME:-bwrap}"
+readonly NP_GIT="${NP_GIT-$(command -v git || true)}"
+readonly NIX_PRINT_BUILD_LOGS="${NIX_PRINT_BUILD_LOGS:-false}"
+readonly NIX_VERBOSITY="${NIX_VERBOSITY:-0}"
+
+# ═════ Main ═══════════════════════════════════════════════════════════════════
+# Ensure tools are installed
+"$SCRIPT_DIR/bootstrap"
+
+if [ -x "$NP_BIN" ]; then
+    export NP_DEBUG NP_LOCATION NP_RUNTIME
+    [ -z "$NP_GIT" ] || export NP_GIT
+
+    [ "$#" -eq 0 ] || set -- --command "$@"
+    exec "$NP_BIN" nix develop --no-warn-dirty --ignore-environment \
+        --keep PATH --keep TERM \
+        "$@"
+fi
+
 exit 1

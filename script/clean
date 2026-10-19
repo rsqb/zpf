@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+
 # ────────────────────────────────────────────────────────────────────────
 # SPDX-FileCopyrightText: Copyright © 2026 Yehor Marichev <legal@rsqb.dev>
 # SPDX-License-Identifier: MPL-2.0
@@ -7,7 +8,30 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 # ────────────────────────────────────────────────────────────────────────
+
+# ┌────────────────────────────────────────────────────────────────────────────┐
+# │  Preconditions:                                                            │
+# │    - realpath($0) == <project-root>/script/*                               │
+# └────────────────────────────────────────────────────────────────────────────┘
+
+# ═════ Initialization ═════════════════════════════════════════════════════════
+
+# ───── Prologue ───────────────────────────────────────────────────────────────
 set -eu
 
+# Resolve SCRIPT_DIR, PROJECT_ROOT; cd to root
+CDPATH= cd -- "$(dirname -- "$(realpath -- "$0")")"
+readonly SCRIPT_DIR="$PWD"
+cd ..
+readonly PROJECT_ROOT="$PWD"
+
+# ───── Constants ──────────────────────────────────────────────────────────────
+# NOTE: Keep in sync with script/bootstrap and script/console
+readonly TOOLS_DIR="$PROJECT_ROOT/tools"
+readonly NIX_INSTALL_DIR="$TOOLS_DIR/nix"
+readonly NP_BIN="$NIX_INSTALL_DIR/nix-portable"
+readonly NP_LOCATION="$NIX_INSTALL_DIR"
+
+# ═════ Main ═══════════════════════════════════════════════════════════════════
 echo "clean: not implemented yet" >&2
 exit 1
