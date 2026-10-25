@@ -1,0 +1,183 @@
+# ────────────────────────────────────────────────────────────────────────
+# SPDX-FileCopyrightText: Copyright © 2026 Yehor Marichev <legal@rsqb.dev>
+# SPDX-License-Identifier: MPL-2.0
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+# ────────────────────────────────────────────────────────────────────────
+
+# ┌────────────────────────────────────────────────────────────────────────────┐
+# │  Tags (after RFC 2119):                                                    │
+# │    MUST     required by standard or tool; cannot be changed                │
+# │    SHOULD   adopted from established convention                            │
+# │    MAY      chosen by project                                              │
+# │                                                                            │
+# │  Key order:                                                                │
+# │    - indent_style                                                          │
+# │    - indent_size                                                           │
+# │    - tab_width                                                             │
+# │    - end_of_line                                                           │
+# │    - charset                                                               │
+# │    - spelling_language                                                     │
+# │    - trim_trailing_whitespace                                              │
+# │    - insert_final_newline                                                  │
+# │    - max_line_length                                                       │
+# └────────────────────────────────────────────────────────────────────────────┘
+
+root = true
+
+# Strict defaults
+[*]
+# MUST
+charset                  = utf-8
+# SHOULD
+end_of_line              = lf
+spelling_language        = en
+trim_trailing_whitespace = true
+insert_final_newline     = true
+
+# Fallback defaults
+[*]
+# SHOULD
+tab_width                = 4
+# MAY
+indent_style             = tab
+indent_size              = tab
+max_line_length          = 100
+
+# ═════ Location defaults ══════════════════════════════════════════════════════
+
+# Shell scripts
+[/script/*]
+# MUST: POSIX shell
+indent_style             = tab
+indent_size              = tab
+end_of_line              = lf
+trim_trailing_whitespace = true
+insert_final_newline     = true
+# SHOULD: OpenBSD style(9)
+tab_width                = 8
+max_line_length          = 80
+
+# ═════ Language defaults ══════════════════════════════════════════════════════
+
+[*.md]
+# MUST: CommonMark
+tab_width                = 4
+# SHOULD
+indent_style             = space
+trim_trailing_whitespace = true
+# MAY
+indent_size              = 4
+max_line_length          = 100
+
+[*.nix]
+# MUST: nixfmt
+indent_style             = space
+indent_size              = 2
+end_of_line              = lf
+trim_trailing_whitespace = true
+insert_final_newline     = true
+# SHOULD: nixfmt
+max_line_length          = 100
+
+[*.svg]
+# MAY
+indent_style             = tab
+indent_size              = tab
+tab_width                = 4
+max_line_length          = 120
+
+[*.xml]
+# MAY
+indent_style             = tab
+indent_size              = tab
+tab_width                = 4
+max_line_length          = 100
+
+[*.{zig,zon}]
+# MUST: zig fmt
+indent_style             = space
+indent_size              = 4
+end_of_line              = lf
+trim_trailing_whitespace = true
+insert_final_newline     = true
+# SHOULD: Zig style guide
+max_line_length          = 100
+
+# JSON files
+[flake.lock]
+# MUST: Nix output
+indent_style             = space
+indent_size              = 2
+trim_trailing_whitespace = true
+insert_final_newline     = true
+max_line_length          = off
+
+[justfile]
+# MUST: Just parser
+# lf|crlf, not cr; lf conventional
+end_of_line              = lf
+# SHOULD: Just .editorconfig
+trim_trailing_whitespace = true
+insert_final_newline     = true
+# MAY
+indent_style             = tab
+indent_size              = tab
+tab_width                = 8
+max_line_length          = 80
+
+# ═════ Role defaults ══════════════════════════════════════════════════════════
+
+# NOTE: unanchor KEYS, LICENSE, PROJECT_COLOR, VERSION for nested projects
+
+# Flat configuration files
+[{*.toml,.editorconfig,.gitattributes,.gitignore}]
+# MUST
+# lf|crlf, not cr; lf preferred
+end_of_line              = lf
+# SHOULD
+indent_style             = space
+indent_size              = 1
+# MAY
+max_line_length          = 80
+
+# Annotated record files
+[/KEYS]
+# MUST: ASCII Armor spec
+# lf|crlf, not cr; lf preferred
+end_of_line              = lf
+insert_final_newline     = true
+# SHOULD
+indent_style             = space
+indent_size              = 1
+# MAY
+max_line_length          = 80
+
+# Verbatim text files
+[/{LICENSES/*.txt,LICENSE}]
+# MUST: REUSE output
+end_of_line              = lf
+trim_trailing_whitespace = false
+insert_final_newline     = true
+max_line_length          = off
+# SHOULD: POSIX expand
+tab_width                = 8
+# MAY
+spelling_language        = en-US
+
+# Single-line files
+[/{PROJECT_COLOR,VERSION,dev}]
+# MUST
+trim_trailing_whitespace = true
+insert_final_newline     = false
+max_line_length          = off
+
+# Marker files
+[.gitkeep]
+# SHOULD
+trim_trailing_whitespace = true
+insert_final_newline     = false
+# MAY
+max_line_length          = off

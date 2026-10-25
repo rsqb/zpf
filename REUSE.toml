@@ -15,7 +15,7 @@ SPDX-FileCopyrightText = "Copyright © 2026 Yehor Marichev <legal@rsqb.dev>"
 SPDX-License-Identifier = "MPL-2.0"
 
 [[annotations]]
-path = ["flake.lock", "VERSION"]
+path = ["VERSION", "flake.lock"]
 SPDX-FileCopyrightText = "Copyright © 2026 Yehor Marichev <legal@rsqb.dev>"
 SPDX-License-Identifier = "MIT-0"
 

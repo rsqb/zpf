@@ -32,4 +32,4 @@ alias h := help
 [doc('Default: Show available recipes')]
 [default]
 help:
-    {{just_executable()}} --justfile {{justfile()}} --list --unsorted
+	{{just_executable()}} --justfile {{justfile()}} --list --unsorted

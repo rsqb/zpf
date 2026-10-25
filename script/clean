@@ -26,7 +26,7 @@ cd ..
 readonly PROJECT_ROOT="$PWD"
 
 # ───── Constants ──────────────────────────────────────────────────────────────
-# NOTE: Keep in sync with script/bootstrap and script/console
+# NOTE: keep in sync with script/bootstrap and script/console
 readonly TOOLS_DIR="$PROJECT_ROOT/tools"
 readonly NIX_INSTALL_DIR="$TOOLS_DIR/nix"
 readonly NP_BIN="$NIX_INSTALL_DIR/nix-portable"

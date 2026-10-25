@@ -9,6 +9,7 @@
 
 *                text=auto eol=lf
 
+.gitkeep         -text
 PROJECT_COLOR    -text
 VERSION          -text
 

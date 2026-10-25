@@ -51,8 +51,10 @@
 ## Editors
 
 > [!NOTE]
-> Editor-specific files are excluded from source archives.
+> IDE-specific files are excluded from source archives.
 
+- **[EditorConfig](https://editorconfig.org/)**
+<!-- [force loose list in faulty renderers] -->
 - **JetBrains IDEs:** run configurations (`.run/`), required plugins (`externalDependencies.xml`)
 
 ## Layout
@@ -67,6 +69,7 @@
 ├── scratch/        # temporary local files
 ├── script/         # workflow scripts (bootstrap, console, clean)
 ├── templates/      # starter templates
+├── .editorconfig   # formatting rules
 ├── build.zig.zon   # Zig package manifest
 ├── dev             # polyglot script launcher
 ├── flake.nix       # Nix tool declarations

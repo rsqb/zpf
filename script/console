@@ -27,7 +27,7 @@ cd ..
 readonly PROJECT_ROOT="$PWD"
 
 # ───── Constants ──────────────────────────────────────────────────────────────
-# NOTE: Keep in sync with script/bootstrap and script/clean
+# NOTE: keep in sync with script/bootstrap and script/clean
 readonly TOOLS_DIR="$PROJECT_ROOT/tools"
 readonly NIX_INSTALL_DIR="$TOOLS_DIR/nix"
 readonly NP_BIN="$NIX_INSTALL_DIR/nix-portable"
@@ -45,13 +45,13 @@ readonly NIX_VERBOSITY="${NIX_VERBOSITY:-0}"
 "$SCRIPT_DIR/bootstrap"
 
 if [ -x "$NP_BIN" ]; then
-    export NP_DEBUG NP_LOCATION NP_RUNTIME
-    [ -z "$NP_GIT" ] || export NP_GIT
+	export NP_DEBUG NP_LOCATION NP_RUNTIME
+	[ -z "$NP_GIT" ] || export NP_GIT
 
-    [ "$#" -eq 0 ] || set -- --command "$@"
-    exec "$NP_BIN" nix develop --no-warn-dirty --ignore-environment \
-        --keep PATH --keep TERM \
-        "$@"
+	[ "$#" -eq 0 ] || set -- --command "$@"
+	exec "$NP_BIN" nix develop --no-warn-dirty --ignore-environment \
+	    --keep PATH --keep TERM \
+	    "$@"
 fi
 
 exit 1
