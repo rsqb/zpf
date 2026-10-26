@@ -18,9 +18,9 @@
 # ═════ Initialization ═════════════════════════════════════════════════════════
 
 # ───── Prologue ───────────────────────────────────────────────────────────────
-set -eu
+set -euf
 
-# Resolve SCRIPT_DIR, PROJECT_ROOT; cd to root
+# Resolve script directory and <project-root>; cd to root
 CDPATH= cd -- "$(dirname -- "$(realpath -- "$0")")"
 readonly SCRIPT_DIR="$PWD"
 cd ..
@@ -32,26 +32,99 @@ readonly TOOLS_DIR="$PROJECT_ROOT/tools"
 readonly NIX_INSTALL_DIR="$TOOLS_DIR/nix"
 readonly NP_BIN="$NIX_INSTALL_DIR/nix-portable"
 readonly NP_LOCATION="$NIX_INSTALL_DIR"
+readonly NP_HOME="$NP_LOCATION/.nix-portable"
 
 # ───── Environment ────────────────────────────────────────────────────────────
 readonly NP_DEBUG="${NP_DEBUG:-0}"
 readonly NP_RUNTIME="${NP_RUNTIME:-bwrap}"
 readonly NP_GIT="${NP_GIT-$(command -v git || true)}"
-readonly NIX_PRINT_BUILD_LOGS="${NIX_PRINT_BUILD_LOGS:-false}"
-readonly NIX_VERBOSITY="${NIX_VERBOSITY:-0}"
+NIX_PRINT_BUILD_LOGS="${NIX_PRINT_BUILD_LOGS:-false}"
+NIX_VERBOSITY="${NIX_VERBOSITY:-2}"  # 0 = error, 2 = notice, 7 = vomit
+
+# ───── Passthrough ────────────────────────────────────────────────────────────
+readonly XDG_CACHE_HOME="$NP_HOME/cache"
+# ═════ Functions ══════════════════════════════════════════════════════════════
+
+errx() {
+	_exit_status=$1
+	shift
+
+    	printf '%s: error' "${0##*/}" >&2
+	if [ "$#" -gt 0 ]; then
+		printf ': ' >&2
+		printf "$@" >&2
+	fi
+	printf '\n' >&2
+
+	exit "$_exit_status"
+}
+
+is_true() {
+	case $1 in
+		'' | [0-9]* | *[!A-Za-z0-9_]*)
+			errx 1 'is_true: '\''%s'\'': bad variable name' "$1"
+			;;
+		*)
+			# $1 = name, $2 = value, $3 = set flag
+			eval "set -- \"$1\" \"\${$1-}\" \${$1+set}"
+			if [ "$#" -ne 3 ]; then
+				errx 1 "is_true: '%s': parameter not set" "$1"
+			fi
+			;;
+	esac
+
+	case $2 in
+		true|1)  return 0 ;;
+		false|0) return 1 ;;
+		*)
+			errx 1 "$(cat <<-'EOF'
+			invalid value of environment variable %s: '%s'
+			Valid values are:
+			  - 'true', '1'
+			  - 'false', '0'
+			EOF
+			)" "$1" "$2"
+			;;
+	esac
+}
 
 # ═════ Main ═══════════════════════════════════════════════════════════════════
+
 # Ensure tools are installed
 "$SCRIPT_DIR/bootstrap"
 
-if [ -x "$NP_BIN" ]; then
+# Enter dev environment
+if "$NP_BIN" nix --version >/dev/null 2>&1; then
+	# nix-portable environment variables
 	export NP_DEBUG NP_LOCATION NP_RUNTIME
 	[ -z "$NP_GIT" ] || export NP_GIT
 
+	# Nix options
 	[ "$#" -eq 0 ] || set -- --command "$@"
+
+	if is_true NIX_PRINT_BUILD_LOGS; then
+		set -- --print-build-logs "$@"
+	fi
+	unset -v NIX_PRINT_BUILD_LOGS
+
+	case $NIX_VERBOSITY in
+		0)     set -- --quiet --quiet "$@" ;;
+		1)     set -- --quiet "$@" ;;
+		2)     ;;
+		[3-7]) set -- -$(printf %.$((NIX_VERBOSITY - 2))s vvvvv) "$@" ;;
+		*)
+			errx 1 \
+			    "invalid value of environment variable %s: '%s'" \
+			    NIX_VERBOSITY "$NIX_VERBOSITY"
+			;;
+	esac
+	unset -v NIX_VERBOSITY
+
+	# ...
+	export XDG_CACHE_HOME
 	exec "$NP_BIN" nix develop --no-warn-dirty --ignore-environment \
-	    --keep PATH --keep TERM \
+	    --keep PATH --keep TERM --keep XDG_CACHE_HOME \
 	    "$@"
 fi
 
-exit 1
+errx 1 '%s: not executable' "$NP_BIN"

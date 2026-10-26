@@ -17,9 +17,9 @@
 # ═════ Initialization ═════════════════════════════════════════════════════════
 
 # ───── Prologue ───────────────────────────────────────────────────────────────
-set -eu
+set -euf
 
-# Resolve SCRIPT_DIR, PROJECT_ROOT; cd to root
+# Resolve script directory and <project-root>; cd to root
 CDPATH= cd -- "$(dirname -- "$(realpath -- "$0")")"
 readonly SCRIPT_DIR="$PWD"
 cd ..
@@ -31,7 +31,43 @@ readonly TOOLS_DIR="$PROJECT_ROOT/tools"
 readonly NIX_INSTALL_DIR="$TOOLS_DIR/nix"
 readonly NP_BIN="$NIX_INSTALL_DIR/nix-portable"
 readonly NP_LOCATION="$NIX_INSTALL_DIR"
+readonly NP_HOME="$NP_LOCATION/.nix-portable"
+
+# NOTE: refactor if repository isn't on GitHub
+readonly NP_REPO='DavHau/nix-portable'
+readonly NP_RELEASE='latest'  # 'latest' or git tag, e.g. 'v012'
+readonly NP_ASSET="nix-portable-$(uname -m)"
+
+NP_URL="https://github.com/$NP_REPO/releases"
+case $NP_RELEASE in
+	latest) NP_URL="$NP_URL/latest/download" ;;
+	*)      NP_URL="$NP_URL/download/$NP_RELEASE" ;;
+esac
+readonly NP_URL="$NP_URL/$NP_ASSET"
+
+# ═════ Functions ══════════════════════════════════════════════════════════════
+
+errx() {
+	_exit_status=$1
+	shift
+
+	printf '%s: error' "${0##*/}" >&2
+	if [ "$#" -gt 0 ]; then
+		printf ': ' >&2
+		printf "$@" >&2
+	fi
+	printf '\n' >&2
+
+	exit "$_exit_status"
+}
 
 # ═════ Main ═══════════════════════════════════════════════════════════════════
-echo "bootstrap: not implemented yet" >&2
-exit 0  # not to fail script/console
+
+# Download nix-portable if missing
+if ! "$NP_BIN" nix --version >/dev/null 2>&1; then
+	command -v curl >/dev/null || errx 1 'curl: not found'
+	curl --retry 3 --retry-connrefused
+	# ...
+fi
+
+exit 0

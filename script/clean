@@ -17,9 +17,9 @@
 # ═════ Initialization ═════════════════════════════════════════════════════════
 
 # ───── Prologue ───────────────────────────────────────────────────────────────
-set -eu
+set -euf
 
-# Resolve SCRIPT_DIR, PROJECT_ROOT; cd to root
+# Resolve script directory and <project-root>; cd to root
 CDPATH= cd -- "$(dirname -- "$(realpath -- "$0")")"
 readonly SCRIPT_DIR="$PWD"
 cd ..
@@ -31,7 +31,26 @@ readonly TOOLS_DIR="$PROJECT_ROOT/tools"
 readonly NIX_INSTALL_DIR="$TOOLS_DIR/nix"
 readonly NP_BIN="$NIX_INSTALL_DIR/nix-portable"
 readonly NP_LOCATION="$NIX_INSTALL_DIR"
+readonly NP_HOME="$NP_LOCATION/.nix-portable"
+
+# ═════ Functions ══════════════════════════════════════════════════════════════
+
+warnx() {
+    	printf '%s: warning' "${0##*/}" >&2
+	if [ "$#" -gt 0 ]; then
+		printf ': ' >&2
+		printf "$@" >&2
+	fi
+	printf '\n' >&2
+}
 
 # ═════ Main ═══════════════════════════════════════════════════════════════════
-echo "clean: not implemented yet" >&2
+
+rm -f "$NP_BIN"
+rm -rf "$NIX_INSTALL_DIR"
+
+if [ -d "$TOOLS_DIR" ] && [ -z "$(ls -A "$TOOLS_DIR")" ]; then
+	rmdir "$TOOLS_DIR"
+fi
+
 exit 1
