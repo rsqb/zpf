@@ -149,11 +149,10 @@ max_line_length          = 80
 # lf|crlf, not cr; lf preferred
 end_of_line              = lf
 insert_final_newline     = true
+max_line_length          = 76
 # SHOULD
 indent_style             = space
 indent_size              = 1
-# MAY
-max_line_length          = 80
 
 # Verbatim text files
 [/{LICENSES/*.txt,LICENSE}]

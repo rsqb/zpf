@@ -10,7 +10,7 @@
 .{
     // Zero-overhead declarative UI framework for Zig.
     .name = .zpf,
-    .version = "0.1.0-dev.17+g26w44d",
+    .version = "0.1.0-dev.18+g26w44e",
     .fingerprint = 0x2dc9890f4f0ef616, // NOTE: changing this has security and trust implications
     .minimum_zig_version = "0.17.0",
     .paths = .{
