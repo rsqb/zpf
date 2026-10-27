@@ -6,8 +6,7 @@
 # See LICENSES/MIT-0.txt or https://spdx.org/licenses/MIT-0.html
 # ────────────────────────────────────────────────────────────────────────
 
-# TODO @rsqb: improve file preface
-# TODO @rsqb: add instructions for populating entries
+# TODO(#1) @rsqb: complete preface
 # OpenPGP public keys of project maintainers.
 #
 # Import with:
