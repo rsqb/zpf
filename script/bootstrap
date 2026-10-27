@@ -61,13 +61,47 @@ errx() {
 	exit "$_exit_status"
 }
 
+msg() {
+	if [ "$#" -gt 0 ]; then
+		printf '%s: ' "${0##*/}" >&2
+		printf "$@" >&2
+	fi
+	printf '\n' >&2
+}
+
 # ═════ Main ═══════════════════════════════════════════════════════════════════
 
 # Download nix-portable if missing
-if ! "$NP_BIN" nix --version >/dev/null 2>&1; then
+if [ ! -s "$NP_BIN" ] || ! "$NP_BIN" nix --version >/dev/null 2>&1; then
 	command -v curl >/dev/null || errx 1 'curl: not found'
-	curl --retry 3 --retry-connrefused
-	# ...
+
+	dir="${NP_BIN%/*}"
+	msg "downloading nix-portable from %s to '%s'..." "$NP_URL" "$dir"
+	mkdir -p "$dir"
+
+	tmp=
+	trap 'rm -f "$tmp"' EXIT
+	trap 'exit 129' HUP
+        trap 'exit 130' INT
+        trap 'exit 131' QUIT
+        trap 'exit 143' TERM
+	tmp="$(
+		mktemp "$dir/.${NP_BIN##*/}.XXXXXX.part" 2>/dev/null ||
+		    mktemp "$dir/.${NP_BIN##*/}.part.XXXXXX"  # no suffix on BSD
+	)"
+	unset -v dir
+
+	curl --disable --proto '=https' --tlsv1.2 \
+	    -fL --retry 3 --retry-connrefused \
+	    --connect-timeout 10 --speed-limit 10 --speed-time 30 \
+	    --progress-bar -o "$tmp" "$NP_URL"
+	[ -s "$tmp" ] || errx 1 'downloaded file is empty'  # e.g. empty 200 OK
+
+	chmod +x "$tmp"
+	mv "$tmp" "$NP_BIN"
+
+	trap - EXIT HUP INT QUIT TERM
+	unset -v tmp
 fi
 
 exit 0

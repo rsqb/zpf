@@ -94,7 +94,7 @@ is_true() {
 "$SCRIPT_DIR/bootstrap"
 
 # Enter dev environment
-if "$NP_BIN" nix --version >/dev/null 2>&1; then
+if [ -s "$NP_BIN" ] && "$NP_BIN" nix --version >/dev/null 2>&1; then
 	# nix-portable environment variables
 	export NP_DEBUG NP_LOCATION NP_RUNTIME
 	[ -z "$NP_GIT" ] || export NP_GIT
