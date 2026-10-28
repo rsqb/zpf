@@ -9,6 +9,10 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 # ────────────────────────────────────────────────────────────────────────
 
+# TODO @rsqb: preconditions incomplete
+# TODO @rsqb: no environment legend
+# TODO @rsqb: no postconditions
+# TODO @rsqb: no usage example
 # ┌────────────────────────────────────────────────────────────────────────────┐
 # │  Preconditions:                                                            │
 # │    - realpath($0) == <project-root>/script/*                               │
@@ -31,7 +35,7 @@ readonly PROJECT_ROOT="$PWD"
 readonly TOOLS_DIR="$PROJECT_ROOT/tools"
 readonly NIX_INSTALL_DIR="$TOOLS_DIR/nix"
 readonly NP_BIN="$NIX_INSTALL_DIR/nix-portable"
-readonly NP_LOCATION="$NIX_INSTALL_DIR"
+readonly NP_LOCATION="$NIX_INSTALL_DIR"  # in project tree so clean purges all
 readonly NP_HOME="$NP_LOCATION/.nix-portable"
 
 # ───── Environment ────────────────────────────────────────────────────────────
@@ -46,6 +50,9 @@ readonly XDG_CACHE_HOME="$NP_HOME/cache"
 
 # ═════ Functions ══════════════════════════════════════════════════════════════
 
+# XXX @rsqb: functions duplicated across scripts; worth a shared file?
+
+# TODO @rsqb: missing function docs
 errx() {
 	_exit_status=$1
 	shift
@@ -60,6 +67,16 @@ errx() {
 	exit "$_exit_status"
 }
 
+# TODO @rsqb: missing function docs
+msg() {
+	if [ "$#" -gt 0 ]; then
+		printf '%s: ' "${0##*/}" >&2
+		printf "$@" >&2
+	fi
+	printf '\n' >&2
+}
+
+# TODO @rsqb: missing function docs
 is_true() {
 	case $1 in
 		'' | [0-9]* | *[!A-Za-z0-9_]*)
@@ -94,12 +111,14 @@ is_true() {
 # Ensure tools are installed
 "$SCRIPT_DIR/bootstrap"
 
-# nix-portable environment variables
-export NP_DEBUG NP_LOCATION NP_RUNTIME
-[ -z "$NP_GIT" ] || export NP_GIT
-
 # Enter dev environment
-if [ -s "$NP_BIN" ] && "$NP_BIN" nix --version >/dev/null 2>&1; then
+# WARNING: nix-portable hangs on WSL if NP_HOME is still on Windows filesystem;
+#          guards must not execute it
+if [ -s "$NP_BIN" ] && [ -x "$NP_BIN" ]; then
+	# nix-portable environment variables
+	export NP_DEBUG NP_LOCATION NP_RUNTIME
+	[ -z "$NP_GIT" ] || export NP_GIT
+
 	# Nix options
 	[ "$#" -eq 0 ] || set -- --command "$@"
 
@@ -120,6 +139,9 @@ if [ -s "$NP_BIN" ] && "$NP_BIN" nix --version >/dev/null 2>&1; then
 			;;
 	esac
 	unset -v NIX_VERBOSITY
+
+	# TODO @rsqb: print only if bootstrap acted; silent otherwise
+	msg 'entering dev environment...'
 
 	# Run "$@" in dev environment, or interactive shell if none
 	export XDG_CACHE_HOME

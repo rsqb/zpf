@@ -9,6 +9,10 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 # ────────────────────────────────────────────────────────────────────────
 
+# TODO @rsqb: preconditions incomplete
+# TODO @rsqb: no environment legend
+# TODO @rsqb: no postconditions
+# TODO @rsqb: no usage example
 # ┌────────────────────────────────────────────────────────────────────────────┐
 # │  Preconditions:                                                            │
 # │    - realpath($0) == <project-root>/script/*                               │
@@ -30,13 +34,16 @@ readonly PROJECT_ROOT="$PWD"
 readonly TOOLS_DIR="$PROJECT_ROOT/tools"
 readonly NIX_INSTALL_DIR="$TOOLS_DIR/nix"
 readonly NP_BIN="$NIX_INSTALL_DIR/nix-portable"
-readonly NP_LOCATION="$NIX_INSTALL_DIR"
+readonly NP_LOCATION="$NIX_INSTALL_DIR"  # in project tree so clean purges all
 readonly NP_HOME="$NP_LOCATION/.nix-portable"
 readonly DISK_IMAGE="$NIX_INSTALL_DIR/nix-portable-ext4.img"
 readonly MOUNT_POINT="$NP_HOME"
 
 # ═════ Functions ══════════════════════════════════════════════════════════════
 
+# XXX @rsqb: functions duplicated across scripts; worth a shared file?
+
+# TODO @rsqb: missing function docs
 warnx() {
 	printf '%s: warning' "${0##*/}" >&2
 	if [ "$#" -gt 0 ]; then
@@ -46,7 +53,29 @@ warnx() {
 	printf '\n' >&2
 }
 
+# TODO @rsqb: missing function docs
+msg() {
+	if [ "$#" -gt 0 ]; then
+		printf '%s: ' "${0##*/}" >&2
+		printf "$@" >&2
+	fi
+	printf '\n' >&2
+}
+
 # ═════ Main ═══════════════════════════════════════════════════════════════════
+
+# TODO @rsqb: no confirmation for destructive action
+# TODO @rsqb: no warning if nothing was removed
+
+if mountpoint -q "$MOUNT_POINT"; then
+	msg "unmounting '%s' (requires sudo)..." \
+	    "${MOUNT_POINT#"$PROJECT_ROOT"/}"
+	sudo umount "$MOUNT_POINT"
+fi
+
+if [ -d "$NP_HOME" ]; then
+	chmod -R u+w "$NP_HOME"  # Nix store paths are read-only
+fi
 
 rm -f "$DISK_IMAGE" "$NP_BIN"
 rm -rf "$NIX_INSTALL_DIR"
@@ -55,4 +84,4 @@ if [ -d "$TOOLS_DIR" ] && [ -z "$(ls -A "$TOOLS_DIR")" ]; then
 	rmdir "$TOOLS_DIR"
 fi
 
-exit 1
+exit 0

@@ -9,6 +9,10 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 # ────────────────────────────────────────────────────────────────────────
 
+# TODO @rsqb: preconditions incomplete
+# TODO @rsqb: no environment legend
+# TODO @rsqb: no postconditions
+# TODO @rsqb: no usage example
 # ┌────────────────────────────────────────────────────────────────────────────┐
 # │  Preconditions:                                                            │
 # │    - realpath($0) == <project-root>/script/*                               │
@@ -30,7 +34,7 @@ readonly PROJECT_ROOT="$PWD"
 readonly TOOLS_DIR="$PROJECT_ROOT/tools"
 readonly NIX_INSTALL_DIR="$TOOLS_DIR/nix"
 readonly NP_BIN="$NIX_INSTALL_DIR/nix-portable"
-readonly NP_LOCATION="$NIX_INSTALL_DIR"
+readonly NP_LOCATION="$NIX_INSTALL_DIR"  # in project tree so clean purges all
 readonly NP_HOME="$NP_LOCATION/.nix-portable"
 readonly DISK_IMAGE="$NIX_INSTALL_DIR/nix-portable-ext4.img"
 readonly MOUNT_POINT="$NP_HOME"
@@ -48,8 +52,14 @@ case $NP_RELEASE in
 esac
 readonly NP_URL="$NP_URL/$NP_ASSET"
 
+# ───── Environment ────────────────────────────────────────────────────────────
+readonly DISK_IMAGE_SIZE="${DISK_IMAGE_SIZE:-8G}"
+
 # ═════ Functions ══════════════════════════════════════════════════════════════
 
+# XXX @rsqb: functions duplicated across scripts; worth a shared file?
+
+# TODO @rsqb: missing function docs
 errx() {
 	_exit_status=$1
 	shift
@@ -64,6 +74,7 @@ errx() {
 	exit "$_exit_status"
 }
 
+# TODO @rsqb: missing function docs
 msg() {
 	if [ "$#" -gt 0 ]; then
 		printf '%s: ' "${0##*/}" >&2
@@ -74,17 +85,18 @@ msg() {
 
 # ═════ Main ═══════════════════════════════════════════════════════════════════
 
-# nix-portable environment variables
-export NP_LOCATION
-
 # Download nix-portable if missing
-if [ ! -s "$NP_BIN" ] || ! "$NP_BIN" nix --version >/dev/null 2>&1; then
+# WARNING: nix-portable hangs on WSL if NP_HOME is still on Windows filesystem;
+#          guards must not execute it
+if [ ! -s "$NP_BIN" ] || [ ! -x "$NP_BIN" ]; then
 	command -v curl >/dev/null || errx 1 'curl: not found'
 
 	dir="${NP_BIN%/*}"
-	msg "downloading nix-portable from %s to '%s'..." "$NP_URL" "$dir"
+	msg "downloading nix-portable from %s to '%s'..." \
+	    "$NP_URL" "${dir#"$PROJECT_ROOT"/}"
 	mkdir -p "$dir"
 
+	# TODO @rsqb: factor out duplicated staging
 	# Stage in temp file so nix-portable existence is atomic
 	tmp=
 	trap 'rm -f "$tmp"' EXIT
@@ -109,6 +121,45 @@ if [ ! -s "$NP_BIN" ] || ! "$NP_BIN" nix --version >/dev/null 2>&1; then
 
 	trap - EXIT HUP INT QUIT TERM
 	unset -v tmp
+fi
+
+# FIXME @rsqb: skip disk image unless NP_HOME is on Windows filesystem
+
+# Create ext4 disk image for NP_HOME if missing
+if [ ! -f "$DISK_IMAGE" ]; then
+	command -v mkfs.ext4 >/dev/null || errx 1 'mkfs.ext4: not found'
+
+	msg "creating %s ext4 disk image for Nix at '%s'..." \
+	    "$DISK_IMAGE_SIZE" "${DISK_IMAGE#"$PROJECT_ROOT"/}"
+	mkdir -p "${DISK_IMAGE%/*}"
+
+	# TODO @rsqb: factor out duplicated staging
+	# Stage in temp file so image existence is atomic
+	tmp="$DISK_IMAGE.part"
+	trap 'rm -f "$tmp"' EXIT
+	trap 'exit 129' HUP
+	trap 'exit 130' INT
+	trap 'exit 131' QUIT
+	trap 'exit 143' TERM
+	rm -f "$tmp"
+
+	# FIXME @rsqb: no way to grow or shrink existing image
+	mkfs.ext4 -Fq -E root_owner="$(id -u):$(id -g)" \
+	    "$tmp" "$DISK_IMAGE_SIZE" >/dev/null
+	mv "$tmp" "$DISK_IMAGE"
+
+	trap - EXIT HUP INT QUIT TERM
+	unset -v tmp
+fi
+
+# Mount disk image if not already mounted
+if ! mountpoint -q "$MOUNT_POINT"; then
+	sudo -k
+	msg "mounting '%s' at '%s' (requires sudo)..." \
+	    "${DISK_IMAGE#"$PROJECT_ROOT"/}" \
+	    "${MOUNT_POINT#"$PROJECT_ROOT"/}"
+	mkdir -p "$MOUNT_POINT"
+	sudo mount -o loop,nosuid,nodev "$DISK_IMAGE" "$MOUNT_POINT"
 fi
 
 exit 0
