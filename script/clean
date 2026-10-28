@@ -32,11 +32,13 @@ readonly NIX_INSTALL_DIR="$TOOLS_DIR/nix"
 readonly NP_BIN="$NIX_INSTALL_DIR/nix-portable"
 readonly NP_LOCATION="$NIX_INSTALL_DIR"
 readonly NP_HOME="$NP_LOCATION/.nix-portable"
+readonly DISK_IMAGE="$NIX_INSTALL_DIR/nix-portable-ext4.img"
+readonly MOUNT_POINT="$NP_HOME"
 
 # ═════ Functions ══════════════════════════════════════════════════════════════
 
 warnx() {
-    	printf '%s: warning' "${0##*/}" >&2
+	printf '%s: warning' "${0##*/}" >&2
 	if [ "$#" -gt 0 ]; then
 		printf ': ' >&2
 		printf "$@" >&2
@@ -46,7 +48,7 @@ warnx() {
 
 # ═════ Main ═══════════════════════════════════════════════════════════════════
 
-rm -f "$NP_BIN"
+rm -f "$DISK_IMAGE" "$NP_BIN"
 rm -rf "$NIX_INSTALL_DIR"
 
 if [ -d "$TOOLS_DIR" ] && [ -z "$(ls -A "$TOOLS_DIR")" ]; then

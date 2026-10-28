@@ -43,13 +43,14 @@ NIX_VERBOSITY="${NIX_VERBOSITY:-2}"  # 0 = error, 2 = notice, 7 = vomit
 
 # ───── Passthrough ────────────────────────────────────────────────────────────
 readonly XDG_CACHE_HOME="$NP_HOME/cache"
+
 # ═════ Functions ══════════════════════════════════════════════════════════════
 
 errx() {
 	_exit_status=$1
 	shift
 
-    	printf '%s: error' "${0##*/}" >&2
+	printf '%s: error' "${0##*/}" >&2
 	if [ "$#" -gt 0 ]; then
 		printf ': ' >&2
 		printf "$@" >&2
@@ -93,12 +94,12 @@ is_true() {
 # Ensure tools are installed
 "$SCRIPT_DIR/bootstrap"
 
+# nix-portable environment variables
+export NP_DEBUG NP_LOCATION NP_RUNTIME
+[ -z "$NP_GIT" ] || export NP_GIT
+
 # Enter dev environment
 if [ -s "$NP_BIN" ] && "$NP_BIN" nix --version >/dev/null 2>&1; then
-	# nix-portable environment variables
-	export NP_DEBUG NP_LOCATION NP_RUNTIME
-	[ -z "$NP_GIT" ] || export NP_GIT
-
 	# Nix options
 	[ "$#" -eq 0 ] || set -- --command "$@"
 
@@ -120,7 +121,7 @@ if [ -s "$NP_BIN" ] && "$NP_BIN" nix --version >/dev/null 2>&1; then
 	esac
 	unset -v NIX_VERBOSITY
 
-	# ...
+	# Run "$@" in dev environment, or interactive shell if none
 	export XDG_CACHE_HOME
 	exec "$NP_BIN" nix develop --no-warn-dirty --ignore-environment \
 	    --keep PATH --keep TERM --keep XDG_CACHE_HOME \

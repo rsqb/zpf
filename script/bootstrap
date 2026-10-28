@@ -32,11 +32,14 @@ readonly NIX_INSTALL_DIR="$TOOLS_DIR/nix"
 readonly NP_BIN="$NIX_INSTALL_DIR/nix-portable"
 readonly NP_LOCATION="$NIX_INSTALL_DIR"
 readonly NP_HOME="$NP_LOCATION/.nix-portable"
+readonly DISK_IMAGE="$NIX_INSTALL_DIR/nix-portable-ext4.img"
+readonly MOUNT_POINT="$NP_HOME"
 
 # NOTE: refactor if repository isn't on GitHub
 readonly NP_REPO='DavHau/nix-portable'
 readonly NP_RELEASE='latest'  # 'latest' or git tag, e.g. 'v012'
-readonly NP_ASSET="nix-portable-$(uname -m)"
+NP_ASSET="nix-portable-$(uname -m)"
+readonly NP_ASSET
 
 NP_URL="https://github.com/$NP_REPO/releases"
 case $NP_RELEASE in
@@ -71,6 +74,9 @@ msg() {
 
 # ═════ Main ═══════════════════════════════════════════════════════════════════
 
+# nix-portable environment variables
+export NP_LOCATION
+
 # Download nix-portable if missing
 if [ ! -s "$NP_BIN" ] || ! "$NP_BIN" nix --version >/dev/null 2>&1; then
 	command -v curl >/dev/null || errx 1 'curl: not found'
@@ -79,12 +85,13 @@ if [ ! -s "$NP_BIN" ] || ! "$NP_BIN" nix --version >/dev/null 2>&1; then
 	msg "downloading nix-portable from %s to '%s'..." "$NP_URL" "$dir"
 	mkdir -p "$dir"
 
+	# Stage in temp file so nix-portable existence is atomic
 	tmp=
 	trap 'rm -f "$tmp"' EXIT
 	trap 'exit 129' HUP
-        trap 'exit 130' INT
-        trap 'exit 131' QUIT
-        trap 'exit 143' TERM
+	trap 'exit 130' INT
+	trap 'exit 131' QUIT
+	trap 'exit 143' TERM
 	tmp="$(
 		mktemp "$dir/.${NP_BIN##*/}.XXXXXX.part" 2>/dev/null ||
 		    mktemp "$dir/.${NP_BIN##*/}.part.XXXXXX"  # no suffix on BSD
