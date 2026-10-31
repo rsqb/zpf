@@ -18,7 +18,13 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in {
       devShells.${system}.default = pkgs.mkShell {
-        packages = [ pkgs.nushell pkgs.just pkgs.reuse pkgs.zig_0_17 ];
+        packages = [
+          pkgs.just
+          pkgs.mandoc
+          pkgs.nushell
+          pkgs.reuse
+          pkgs.zig_0_17
+        ];
       };
     };
 }
