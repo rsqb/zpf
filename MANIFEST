@@ -7,23 +7,23 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 # ────────────────────────────────────────────────────────────────────────
 
-# Rootstock files distributed to downstream projects;
+# devkit files distributed to downstream projects;
 # Zig package contents are in build.zig.zon
 
 sync .run/dev-clean.run.xml
 sync .run/dev-shell.run.xml
 sync LICENSES/MPL-2.0.txt
 sync dev
-sync docs/rootstock/man/MANIFEST.5
-sync docs/rootstock/man/PROJECT_COLOR.5
-sync docs/rootstock/man/UPSTREAM.5
-sync docs/rootstock/man/VERSION.5
-sync docs/rootstock/man/bootstrap.1
-sync docs/rootstock/man/clean.1
-sync docs/rootstock/man/console.1
-sync docs/rootstock/man/dev.1
-sync docs/rootstock/man/graft.1
-sync docs/rootstock/man/version.1
+sync docs/devkit/man/man1/bootstrap.1
+sync docs/devkit/man/man1/clean.1
+sync docs/devkit/man/man1/console.1
+sync docs/devkit/man/man1/dev.1
+sync docs/devkit/man/man1/graft.1
+sync docs/devkit/man/man1/version.1
+sync docs/devkit/man/man5/MANIFEST.5
+sync docs/devkit/man/man5/PROJECT_COLOR.5
+sync docs/devkit/man/man5/UPSTREAM.5
+sync docs/devkit/man/man5/VERSION.5
 sync graft
 sync script/bootstrap
 sync script/clean
