@@ -84,10 +84,10 @@
 - **Dev builds:**
 
   ```text
-  X.Y.Z-dev.N+gYYwWWS
+  X.Y.Z-dev.N+uYYwWWS
   │         │  │  │ └─ commit within week (z*[a-z])
   │         │  │  └─── ISO week (01–53)
-  │         │  └────── ISO week-year (00–99)
+  │         │  └────── ISO week-year since Unix epoch (00–99)
   │         └───────── dev build number
   └─────────────────── next release
   ```
